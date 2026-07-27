@@ -1,0 +1,12 @@
+{
+  "name": "shiyin-player",
+  "version": "1.0.0",
+  "description": "拾音 — 自研网易云音乐第三方网页客户端：逐字歌词、听歌热力、AI 点歌助理",
+  "scripts": {
+    "setup": "cd server && npm install",
+    "start": "cd server && npm start"
+  },
+  "keywords": ["netease", "cloud-music", "music-player", "lyrics", "ai-agent"],
+  "license": "MIT",
+  "private": false
+}

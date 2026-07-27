@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>拾音</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="app">
+  <!-- 侧边栏 -->
+  <aside id="sidebar">
+    <div class="logo"><span class="logo-ico">♪</span><span class="logo-name serif">拾音</span></div>
+    <div class="side-group">
+      <button class="side-item" data-view="me">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6.5 8-6.5s8 2.5 8 6.5"/></svg>
+        我的
+      </button>
+      <button class="side-item active" data-view="discover">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="m15 9-2 5-4 1 2-5z"/></svg>
+        发现音乐
+      </button>
+      <button class="side-item" data-view="fm">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4.9 19.1a10 10 0 0 1 0-14.2M7.8 16.2a6 6 0 0 1 0-8.4M16.2 7.8a6 6 0 0 1 0 8.4M19.1 4.9a10 10 0 0 1 0 14.2"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/></svg>
+        私人FM
+      </button>
+      <button class="side-item" data-view="ai">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="7" width="14" height="11" rx="3"/><path d="M12 7V4M9 12h.01M15 12h.01M9.5 15.5c1.5 1 3.5 1 5 0"/></svg>
+        AI 助理
+      </button>
+    </div>
+    <div class="side-title">我的歌单</div>
+    <div class="side-group" id="side-playlists"></div>
+  </aside>
+
+  <!-- 主区域 -->
+  <div id="main-wrap">
+    <header id="topbar">
+      <div class="search">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+        <input id="search-input" placeholder="搜索音乐、歌手" autocomplete="off">
+        <div id="sg-box"></div>
+      </div>
+      <button class="tb-settings" id="tb-settings" title="设置">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.7 1.7 0 0 0-1.87-.34 1.7 1.7 0 0 0-1 1.55V21a2 2 0 1 1-4 0v-.09a1.7 1.7 0 0 0-1-1.55 1.7 1.7 0 0 0-1.87.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.7 1.7 0 0 0 .34-1.87 1.7 1.7 0 0 0-1.55-1H3a2 2 0 1 1 0-4h.09a1.7 1.7 0 0 0 1.55-1 1.7 1.7 0 0 0-.34-1.87l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.7 1.7 0 0 0 1.87.34h.09a1.7 1.7 0 0 0 1-1.55V3a2 2 0 1 1 4 0v.09a1.7 1.7 0 0 0 1 1.55h.09a1.7 1.7 0 0 0 1.87-.34l.06.06a2 2 0 1 1 2.83 2.83l-.06.06a1.7 1.7 0 0 0 1.55 1H21a2 2 0 1 1 0 4h-.09a1.7 1.7 0 0 0-1.55 1z"/></svg>
+      </button>
+      <div class="user" id="user-box">
+        <span class="avatar" id="user-avatar">未</span><span class="uname" id="user-name">点击登录</span>
+        <div id="user-menu">
+          <button class="um-item" id="um-settings">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.7 1.7 0 0 0-1.87-.34 1.7 1.7 0 0 0-1 1.55V21a2 2 0 1 1-4 0v-.09a1.7 1.7 0 0 0-1-1.55 1.7 1.7 0 0 0-1.87.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.7 1.7 0 0 0 .34-1.87 1.7 1.7 0 0 0-1.55-1H3a2 2 0 1 1 0-4h.09a1.7 1.7 0 0 0 1.55-1 1.7 1.7 0 0 0-.34-1.87l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.7 1.7 0 0 0 1.87.34h.09a1.7 1.7 0 0 0 1-1.55V3a2 2 0 1 1 4 0v.09a1.7 1.7 0 0 0 1 1.55h.09a1.7 1.7 0 0 0 1.87-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.7 1.7 0 0 0-.34 1.87v.09a1.7 1.7 0 0 0 1.55 1H21a2 2 0 1 1 0 4h-.09a1.7 1.7 0 0 0-1.55 1z"/></svg>
+            设置
+          </button>
+          <button class="um-item um-danger" id="um-logout">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg>
+            退出登录
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main id="main">
+      <section class="view show" id="view-discover">
+        <div class="dv-tabs" id="dv-tabs">
+          <button class="dv-tab active" data-pane="dv-rec">个性推荐</button>
+          <button class="dv-tab" data-pane="dv-top">排行榜</button>
+          <button class="dv-tab" data-pane="dv-artist">歌手</button>
+          <button class="dv-tab" data-pane="dv-new">最新音乐</button>
+        </div>
+        <div class="dv-pane show" id="dv-rec">
+          <div class="dv-greet serif" id="dv-greet"></div>
+          <div class="dv-hero" id="dv-hero"></div>
+          <h2 class="page-title serif">推荐歌单</h2>
+          <div class="card-grid" id="pl-cards"></div>
+        </div>
+        <div class="dv-pane" id="dv-top">
+          <div class="card-grid" id="top-cards"></div>
+        </div>
+        <div class="dv-pane" id="dv-artist">
+          <div class="dv-artist-grid" id="artist-grid"></div>
+        </div>
+        <div class="dv-pane" id="dv-new">
+          <table class="song-table">
+            <thead><tr><th class="c-num"></th><th>音乐标题</th><th>歌手</th><th>专辑</th><th class="c-dur">时长</th></tr></thead>
+            <tbody id="new-song-list"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="view" id="view-playlist">
+        <div class="pl-head">
+          <img class="pl-cover" id="pl-cover" alt="">
+          <div class="pl-info">
+            <div class="pl-tag" id="pl-tag">歌单</div>
+            <h2 class="serif" id="pl-name"></h2>
+            <div class="pl-creator" id="pl-creator"></div>
+            <div class="pl-actions">
+              <button class="btn-primary" id="pl-play-all">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                播放全部
+              </button>
+              <button class="btn-ghost" id="pl-sub">+ 收藏</button>
+            </div>
+            <div class="pl-desc" id="pl-desc"></div>
+          </div>
+        </div>
+        <table class="song-table">
+          <thead><tr><th class="c-num"></th><th>音乐标题</th><th>歌手</th><th>专辑</th><th class="c-dur">时长</th></tr></thead>
+          <tbody id="song-list"></tbody>
+        </table>
+      </section>
+
+      <section class="view" id="view-fm">
+        <div class="fm-stage2">
+          <div class="fm-cover-wrap" id="fm-cover-wrap"><img id="fm-cover" alt=""></div>
+          <div class="fm-right">
+            <div class="fm-title serif" id="fm-title">私人FM</div>
+            <div class="fm-artist" id="fm-artist">根据你的口味无限推荐</div>
+            <div class="fm-lyrics" id="fm-lyrics"></div>
+            <div class="fm-ctrls">
+              <button class="fm-btn" id="fm-trash" title="不喜欢">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M8 6V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
+              </button>
+              <button class="fm-btn fm-play" id="fm-play" title="播放/暂停">
+                <svg id="fm-play-ico" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+              </button>
+              <button class="fm-btn" id="fm-next" title="下一首">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 5h2v14h-2zM4 5v14l11-7z"/></svg>
+              </button>
+            </div>
+            <div class="fm-hint" id="fm-hint">登录后开启你的专属电台</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="view" id="view-me">
+        <h2 class="page-title serif">我的</h2>
+        <div class="me-guest" id="me-guest">
+          <p>登录后查看你的音乐主页</p>
+          <button class="btn-primary" id="me-login">立即登录</button>
+        </div>
+        <div id="me-body" hidden>
+          <div class="me-nowcard" id="me-now" title="展开播放页">
+            <img id="me-now-cover" alt="">
+            <div class="me-now-info">
+              <div class="me-now-label">正在播放</div>
+              <div class="me-now-title serif" id="me-now-title">—</div>
+              <div class="me-now-artist" id="me-now-artist">—</div>
+              <div class="me-now-lyric serif" id="me-now-lyric"></div>
+              <div class="me-now-bar"><div class="me-now-fill" id="me-now-fill"></div></div>
+            </div>
+            <div class="me-now-ctrls">
+              <button class="me-ctl" id="me-prev" title="上一首"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 5h2v14H6zM20 5v14L9 12z"/></svg></button>
+              <button class="me-ctl me-ctl-play" id="me-play" title="播放/暂停"><svg id="me-play-ico" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></button>
+              <button class="me-ctl" id="me-next" title="下一首"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 5h2v14h-2zM4 5v14l11-7z"/></svg></button>
+            </div>
+          </div>
+          <div class="me-sec-head">
+            <h3 class="serif">听歌热力</h3>
+            <span class="me-heat-note">从使用拾音开始记录</span>
+            <button class="btn-ghost me-wall-btn" id="me-wall-open">歌单墙</button>
+          </div>
+          <div class="me-heat-row">
+            <div class="me-heat" id="me-heat"></div>
+            <div class="me-quote" id="me-quote">
+              <div class="mq-mark serif">「</div>
+              <div class="mq-text serif" id="mq-text">…</div>
+              <div class="mq-from" id="mq-from"></div>
+            </div>
+          </div>
+          <div class="me-stats" id="me-stats"></div>
+          <div class="me-sec-head">
+            <h3 class="serif">听歌排行</h3>
+            <div class="me-tabs">
+              <button class="me-tab active" data-type="1">本周</button>
+              <button class="me-tab" data-type="0">全部</button>
+            </div>
+          </div>
+          <div class="me-records" id="me-records"></div>
+        </div>
+      </section>
+
+      <section class="view" id="view-ai">
+        <div class="ai-wrap">
+          <div class="ai-head serif">AI 助理</div>
+          <div class="ai-msgs" id="ai-msgs"></div>
+          <div class="ai-guest" id="ai-guest" hidden>
+            <p>还没有配置 AI 服务</p>
+            <button class="btn-primary" id="ai-open-settings">去配置</button>
+          </div>
+          <div class="ai-input-row" id="ai-input-row">
+            <textarea id="ai-input" rows="1" placeholder="问我点什么… (Enter 发送，Shift+Enter 换行)"></textarea>
+            <button class="ai-send" id="ai-send" title="发送">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4z"/></svg>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <section class="view" id="view-search">
+        <h2 class="page-title serif" id="search-title">搜索</h2>
+        <table class="song-table">
+          <thead><tr><th class="c-num"></th><th>音乐标题</th><th>歌手</th><th>专辑</th><th class="c-dur">时长</th></tr></thead>
+          <tbody id="search-list"></tbody>
+        </table>
+      </section>
+    </main>
+  </div>
+
+  <!-- 悬浮播放条 -->
+  <footer id="player">
+    <div class="p-progress" id="p-progress"><div class="p-fill" id="p-fill"></div></div>
+    <div class="p-left">
+      <div class="p-cover-wrap" id="p-cover-wrap" title="展开播放页">
+        <img class="p-cover" id="p-cover" alt="">
+        <svg class="pc-expand" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+      </div>
+      <div class="p-meta">
+        <div class="p-title" id="p-title">—</div>
+        <div class="p-artist" id="p-artist">—</div>
+      </div>
+      <button class="p-like" id="p-like" title="喜欢">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21C7 16.5 3 13.3 3 9.3 3 6.4 5.2 4.5 7.7 4.5c1.7 0 3.3.9 4.3 2.4 1-1.5 2.6-2.4 4.3-2.4 2.5 0 4.7 1.9 4.7 4.8 0 4-4 7.2-9 11.7z"/></svg>
+      </button>
+    </div>
+    <div class="p-center">
+      <button class="p-btn" id="p-mode" title="列表循环">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 2l4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14M7 22l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
+      </button>
+      <button class="p-btn" id="p-prev"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 5h2v14H6zM20 5v14L9 12z"/></svg></button>
+      <button class="p-btn p-play" id="p-play"><svg id="p-play-ico" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></button>
+      <button class="p-btn" id="p-next"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 5h2v14h-2zM4 5v14l11-7z"/></svg></button>
+    </div>
+    <div class="p-right">
+      <button class="p-btn" id="p-queue" title="播放队列">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 6h13M8 12h13M8 18h13M3.5 6h.01M3.5 12h.01M3.5 18h.01"/></svg>
+      </button>
+      <button class="p-btn p-quality" id="p-quality" title="音质选择">极高</button>
+      <span class="p-time" id="p-time">0:00 / 0:00</span>
+      <div class="vol-wrap" id="vol-wrap">
+        <button class="p-btn" id="vol-mute" title="音量 / 点击静音">
+          <svg id="vol-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 5 6 9H2v6h4l5 4V5zM15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></svg>
+        </button>
+        <div class="vol-pop">
+          <div class="vol-bar" id="vol-bar"><div class="vol-fill" id="vol-fill"></div></div>
+        </div>
+      </div>
+    </div>
+  <!-- 播放队列浮层（锚定播放条上方，初始藏于播放条背后） -->
+  <div id="queue-panel">
+    <div class="qp-head">
+      <span id="qp-count">播放队列 (0)</span>
+      <button class="qp-clear" id="qp-clear">清空</button>
+    </div>
+    <div class="qp-list" id="qp-list"></div>
+  </div>
+  </footer>
+</div>
+
+<!-- 全屏播放页 -->
+<div id="np">
+  <div class="np-bg" id="np-bg"></div>
+  <div class="np-fluid" id="np-fluid" aria-hidden="true">
+    <i class="nfb nfb1"></i><i class="nfb nfb2"></i><i class="nfb nfb3"></i><i class="nfb nfb4"></i><i class="nfb nfb5"></i>
+  </div>
+  <div class="np-veil"></div>
+  <button id="np-close" title="收起">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="m6 9 6 6 6-6"/></svg>
+  </button>
+  <div class="np-body">
+    <div class="np-left" id="np-left">
+      <div class="np-cover-wrap" id="np-cover-wrap"><img id="np-cover" alt=""></div>
+    </div>
+    <div class="np-right" id="np-right">
+      <h1 class="np-title serif" id="np-title">—</h1>
+      <div class="np-artist" id="np-artist">—</div>
+      <div class="np-lyrics" id="np-lyrics"></div>
+      <div class="np-prog">
+        <span id="np-cur">0:00</span>
+        <div class="np-bar" id="np-bar"><div class="np-fill" id="np-fill"></div></div>
+        <span id="np-total">0:00</span>
+      </div>
+      <div class="np-ctrls">
+        <button class="np-btn" id="np-like" title="喜欢">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21C7 16.5 3 13.3 3 9.3 3 6.4 5.2 4.5 7.7 4.5c1.7 0 3.3.9 4.3 2.4 1-1.5 2.6-2.4 4.3-2.4 2.5 0 4.7 1.9 4.7 4.8 0 4-4 7.2-9 11.7z"/></svg>
+        </button>
+        <button class="np-btn" id="np-prev"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 5h2v14H6zM20 5v14L9 12z"/></svg></button>
+        <button class="np-btn np-play" id="np-play"><svg id="np-play-ico" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></button>
+        <button class="np-btn" id="np-next"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 5h2v14h-2zM4 5v14l11-7z"/></svg></button>
+        <button class="np-btn" id="np-queue" title="播放队列">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 6h13M8 12h13M8 18h13M3.5 6h.01M3.5 12h.01M3.5 18h.01"/></svg>
+        </button>
+        <button class="np-btn" id="np-comment" title="评论">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a8 8 0 0 1-8 8H4l2-3a8 8 0 1 1 15-5z"/></svg>
+        </button>
+        <button class="np-btn" id="np-mode" title="列表循环">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 2l4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14M7 22l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
+        </button>
+      </div>
+    </div>
+    <div id="np-panel">
+      <div class="npp-head">
+        <button class="npp-tab" id="npp-tab-c">评论</button>
+        <button class="npp-tab" id="npp-tab-q">播放队列</button>
+        <button class="npp-close" id="npp-close" title="收起">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+      <div class="npp-track-wrap">
+        <div class="npp-track" id="npp-track">
+          <div class="npp-pane" id="npp-comments"></div>
+          <div class="npp-pane" id="npp-queue"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- 歌单墙浮窗 -->
+<div id="wall-mask">
+  <div class="wall-head">
+    <div class="wall-title serif">歌单墙</div>
+    <button class="wall-close" id="wall-close" title="关闭">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+  </div>
+  <div class="wall-grid" id="wall-grid"></div>
+</div>
+
+<div id="login-mask">
+  <div id="login-box">
+    <div class="lg-title serif">扫码登录</div>
+    <div class="lg-qr"><img id="lg-qr-img" alt="登录二维码"></div>
+    <div class="lg-tip" id="lg-tip">使用网易云音乐 App 扫码</div>
+    <button class="btn-ghost" id="lg-close">取消</button>
+  </div>
+</div>
+
+<!-- 设置弹窗 -->
+<div id="settings-mask">
+  <div id="settings-box">
+    <div id="st-page-main">
+      <div class="st-title serif">设置</div>
+      <div class="st-group">
+        <div class="st-group-title">外观</div>
+        <div class="st-sec">
+          <div class="st-label">主题模式</div>
+          <div class="st-seg" id="st-theme">
+            <button data-v="light">日间</button>
+            <button data-v="dark">夜间</button>
+          </div>
+        </div>
+        <div class="st-sec">
+          <div class="st-label">主题色</div>
+          <div class="st-dots" id="st-accents"></div>
+        </div>
+        <div class="st-sec">
+          <div class="st-label">全屏封面</div>
+          <div class="st-seg" id="st-cover">
+            <button data-v="square">圆角方形</button>
+            <button data-v="circle">圆形旋转</button>
+          </div>
+        </div>
+        <div class="st-sec">
+          <div class="st-label">封面取色（全屏页动态主题）</div>
+          <div class="st-seg" id="st-npcolor">
+            <button data-v="1">开</button>
+            <button data-v="0">关</button>
+          </div>
+        </div>
+        <div class="st-sec">
+          <div class="st-label">播放页背景</div>
+          <div class="st-seg" id="st-npbg">
+            <button data-v="static">静态模糊</button>
+            <button data-v="fluid">流体动态</button>
+          </div>
+        </div>
+      </div>
+      <div class="st-group">
+        <div class="st-group-title">歌词</div>
+        <div class="st-sec">
+          <div class="st-label">歌词大小 <span class="st-lysize-val" id="st-lysize-val">17.5px</span></div>
+          <input type="range" class="st-range" id="st-lysize-range" min="14" max="24" step="0.5">
+        </div>
+        <div class="st-sec">
+          <div class="st-label">歌词字体</div>
+          <div class="st-seg" id="st-lyfont">
+            <button data-v="sans">黑体</button>
+            <button data-v="serif">宋体</button>
+            <button data-v="kai">楷体</button>
+          </div>
+        </div>
+        <div class="st-sec">
+          <div class="st-label">歌词字重</div>
+          <div class="st-seg" id="st-lyweight">
+            <button data-v="400">常规</button>
+            <button data-v="600">半粗</button>
+            <button data-v="700">粗体</button>
+          </div>
+        </div>
+      </div>
+      <div class="st-group">
+        <div class="st-group-title">自定义 CSS</div>
+        <textarea class="st-css" id="st-custom-css" rows="4" spellcheck="false" placeholder="/* 高级用户，填错清空后点应用即可恢复 */"></textarea>
+        <button class="btn-ghost st-css-apply" id="st-css-apply">应用</button>
+      </div>
+      <button class="st-entry" id="st-ai-open">
+        <span>AI 配置</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 6 6 6-6 6"/></svg>
+      </button>
+      <button class="btn-ghost" id="st-close">完成</button>
+    </div>
+    <div id="st-page-ai" hidden>
+      <div class="st-head2">
+        <button class="st-back" id="st-ai-back">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg>
+          返回
+        </button>
+        <div class="st-title serif">AI 配置</div>
+      </div>
+      <label class="st-field"><span>API Base URL</span><input id="ai-base" placeholder="https://api.openai.com/v1"></label>
+      <label class="st-field"><span>API Key</span><input id="ai-key" type="password" placeholder="sk-..."></label>
+      <label class="st-field"><span>模型名</span><input id="ai-model" placeholder="gpt-4o-mini"></label>
+      <label class="st-field"><span>系统提示词（可空）</span><textarea id="ai-system" rows="3"></textarea></label>
+      <div class="st-hint" id="ai-tool-hint" hidden>当前模型可能不支持工具调用，已自动降级为普通对话（AI 助理将无法直接帮你播歌，换个支持 function calling 的模型可恢复）</div>
+    </div>
+  </div>
+</div>
+
+<script src="data.js"></script>
+<script src="covers.js"></script>
+<script src="api.js"></script>
+<script src="ai-tools.js"></script>
+<script src="audio.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
