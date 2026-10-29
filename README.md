@@ -1,3 +1,9 @@
+---
+
+> [!NOTE]
+> **本仓库已迁移至 Gitee**：<https://gitee.com/Everett5678/shiyin-player>
+> GitHub 端仅作只读归档，新代码请推送到 Gitee。
+
 # 拾音 · Shiyin Player
 
 一个自研的网易云音乐第三方网页客户端。苔绿视觉、液态玻璃、逐字卡拉OK歌词、听歌热力、以及一个能帮你点歌的 AI 助理。
